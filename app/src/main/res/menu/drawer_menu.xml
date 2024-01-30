@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_today"
+            android:icon="@drawable/ic_expense_today"
+            android:title="Today" />
+        <item
+            android:id="@+id/nav_reports"
+            android:icon="@drawable/ic_expense_reports"
+            android:title="Reports" />
+
+
+    </group>
+    <item android:title="Settings">
+
+
+        <menu>
+            <item
+                android:id="@+id/nav_categories"
+                android:icon="@drawable/ic_expense_categories"
+                android:title="Categories" />
+
+        </menu>
+    </item>
+
+    <item android:title="Logout">
+
+
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/ic_expense_categories"
+                android:title="Logout" />
+
+        </menu>
+    </item>
+
+</menu>

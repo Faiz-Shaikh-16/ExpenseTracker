@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ExpenseTracker</string>
+    <string name="todo">TODO</string>
+    <string name="register">Register</string>
+    <string name="register1">Register</string>
+    <string name="if_not_registered_click_below_for_register">If Not Registered? Click below for Register</string>
+    <string name="login">Login</string>
+    <string name="password">Password</string>
+    <string name="username">Username</string>
+    <string name="enter_your_username">Enter your Username</string>
+    <string name="spend_wise">Spend Wise</string>
+    <string name="log_in">Log in</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="logout">Logout</string>
+    <string name="gmail">Gmail</string>
+    <string name="enter_your_username1">Enter your Username</string>
+    <string name="enter_password1">Enter password</string>
+    <string name="register2">Register</string>
+    <string name="login1">Login</string>
+    <string name="username1">Username</string>
+    <string name="password2">Password</string>
+
+<!--    <string name="app_name">Spendwise</string>-->
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string-array name="initial_categories">
+        <item>Clothing</item>
+        <item>Food</item>
+        <item>Drinks</item>
+        <item>Exercise</item>
+        <item>Health</item>
+        <item>Transport</item>
+        <item>Fuel</item>
+        <item>Education</item>
+        <item>Phone</item>
+        <item>Fun</item>
+        <item>Vacation</item>
+        <item>Apartment</item>
+
+    </string-array>
+</resources>

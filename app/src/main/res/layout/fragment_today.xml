@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="4dp"
+    android:background="@drawable/background_today_fragment"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tv_today_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="Today's Expenses "
+        android:textAlignment="center"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_total_amount"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="47dp"
+        android:paddingRight="5dp"
+        android:textAlignment="textEnd"
+        android:textSize="30sp" />
+
+    <TextView
+        android:id="@+id/tv_month_expenses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="47dp"
+        android:paddingLeft="5dp"
+        android:text="Today's Total"
+        android:textSize="30sp" />
+
+
+    <Button
+        android:id="@+id/button_today"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/custom_button"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="107dp"
+        android:text="Add expense" />
+
+    <ListView
+        android:id="@+id/lv_fragm_today"
+        android:layout_width="match_parent"
+        android:layout_height="389dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textViewCat" />
+
+    <TextView
+        android:id="@+id/textViewCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/button_today"
+        android:paddingLeft="15dp"
+        android:text="Category:" />
+
+    <TextView
+        android:id="@+id/textViewCurr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lv_fragm_today"
+        android:layout_alignParentEnd="true"
+        android:paddingRight="15dp"
+        android:text="Amount:"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/textViewDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button_today"
+        android:layout_centerHorizontal="true"
+        android:text="Date:" />
+
+</RelativeLayout>

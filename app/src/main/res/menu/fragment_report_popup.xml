@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/today_filter_option"
+        android:title="From Today"/>
+    <item
+        android:id="@+id/week_filter_option"
+        android:title="From Last 7 days"/>
+    <item
+        android:id="@+id/month_filter_option"
+        android:title="From Last 30 days"/>
+    <item
+        android:id="@+id/date_filter_option"
+        android:title="From Certain Date"/>
+    <item
+        android:id="@+id/all_filter_option"
+        android:title="From Begining"/>
+</menu>

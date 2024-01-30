@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="predefined_categories">
+        <item>Clothing</item>
+        <item>Food</item>
+        <item>Drinks</item>
+        <item>Exercise</item>
+        <item>Health</item>
+        <item>Transport</item>
+        <item>Fuel</item>
+        <item>Education</item>
+        <item>Phone</item>
+        <item>Fun</item>
+        <item>Vacation</item>
+        <item>Apartment</item>
+
+    </string-array>
+
+
+
+</resources>
