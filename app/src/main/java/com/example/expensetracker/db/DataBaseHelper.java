@@ -76,19 +76,41 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public boolean addExp(String category, int amount, int total, String date) {
+    public void AddExp(String category, int amount, String date) {
+        boolean insertData;
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_expCat, category);
-        contentValues.put(COL_expAmount, amount);
-        contentValues.put(COL_total, total);
-        contentValues.put(COL_date, date);
-        long result = db.insert(EXPENSES_TABLE_NAME, null, contentValues);
+
+        // Check if it's an income or expense
+        if (category.equals("Income")) {
+            // Subtract the income amount from the total
+            int newTotal = totalForToday() - amount;
+            ContentValues values = new ContentValues();
+            values.put(COL_expCat, category);
+            values.put(COL_expAmount, amount);
+            values.put(COL_total, newTotal);
+            values.put(COL_date, date);
+            insertData = db.insert(EXPENSES_TABLE_NAME, null, values) != -1;
+        } else {
+            // Add the expense amount to the total
+            int newTotal = totalForToday() + amount;
+            ContentValues values = new ContentValues();
+            values.put(COL_expCat, category);
+            values.put(COL_expAmount, amount);
+            values.put(COL_total, newTotal);
+            values.put(COL_date, date);
+            insertData = db.insert(EXPENSES_TABLE_NAME, null, values) != -1;
+        }
+
         db.close();
-        if (result == -1)
-            return false;
-        else return true;
+
+        if (insertData) {
+            Toast.makeText(context, "Successfully inserted!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "Error!", Toast.LENGTH_SHORT).show();
+        }
     }
+
+
 
     public ArrayList<ListModel> getExpensesList() {
         ArrayList<ListModel> listOfExpenses = new ArrayList();
@@ -97,60 +119,30 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME;
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
 
-        try {
-            int catIndex = cursor.getColumnIndex(DataBaseHelper.COL_expCat);
-            int amountIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-            int dateIndex = cursor.getColumnIndex(DataBaseHelper.COL_date);
-
-            // Check if the columns exist in the result set
-            if (catIndex != -1 && amountIndex != -1 && dateIndex != -1) {
-                while (cursor.moveToNext()) {
-                    String categoryName = cursor.getString(catIndex);
-                    String amount = cursor.getString(amountIndex);
-                    String date = cursor.getString(dateIndex);
-                    ListModel listModel = new ListModel(categoryName, amount, date);
-                    listOfExpenses.add(listModel);
-                }
-            } else {
-                // Handle the case where one or more columns are not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
+        if (cursor.getCount() == 0) {
+            Toast.makeText(context, "The database was empty", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                String categoryName = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expCat));
+                String amount = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expAmount));
+                String date = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_date));
+                ListModel listModel = new ListModel(categoryName, amount, date);
+                listOfExpenses.add(listModel);
             }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
         }
-
         return listOfExpenses;
     }
-
 
     public int total() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         int total = 0;
         String query = "SELECT " + COL_expAmount + " FROM " + EXPENSES_TABLE_NAME;
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int colIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-
-            // Check if the column exists in the result set
-            if (colIndex != -1) {
-                while (cursor.moveToNext()) {
-                    total = total + cursor.getInt(colIndex);
-                }
-            } else {
-                // Handle the case where the column is not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
+        while (cursor.moveToNext()) {
+            total = total + cursor.getInt(cursor.getColumnIndex(COL_expAmount));
         }
-
         return total;
     }
-
 
     public int totalForToday() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -158,27 +150,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE " + COL_date + " = date('now', 'localtime')";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int colIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-
-            // Check if the column exists in the result set
-            if (colIndex != -1) {
-                while (cursor.moveToNext()) {
-                    total = total + cursor.getInt(colIndex);
-                }
-            } else {
-                // Handle the case where the column is not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
+        while (cursor.moveToNext()) {
+            total = total + cursor.getInt(cursor.getColumnIndex(COL_expAmount));
         }
-
         return total;
     }
-
 
     public int totalForWeek() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -187,27 +163,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + " BETWEEN date('now','-6 days') AND date('now')";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int colIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-
-            // Check if the column exists in the result set
-            if (colIndex != -1) {
-                while (cursor.moveToNext()) {
-                    total = total + cursor.getInt(colIndex);
-                }
-            } else {
-                // Handle the case where the column is not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
+        while (cursor.moveToNext()) {
+            total = total + cursor.getInt(cursor.getColumnIndex(COL_expAmount));
         }
-
         return total;
     }
-
 
     public int totalForMonth() {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -215,27 +175,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE " + COL_date + " BETWEEN date('now','-29 days') AND date('now')";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int colIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-
-            // Check if the column exists in the result set
-            if (colIndex != -1) {
-                while (cursor.moveToNext()) {
-                    total = total + cursor.getInt(colIndex);
-                }
-            } else {
-                // Handle the case where the column is not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
+        while (cursor.moveToNext()) {
+            total = total + cursor.getInt(cursor.getColumnIndex(COL_expAmount));
         }
-
         return total;
     }
-
 
     public int totalForCertainDate(String dateC) {
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
@@ -243,28 +187,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE " + COL_date + " = '" + dateC + "'";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int colIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-
-            // Check if the column exists in the result set
-            if (colIndex != -1) {
-                while (cursor.moveToNext()) {
-                    total = total + cursor.getInt(colIndex);
-                }
-            } else {
-                // Handle the case where the column is not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
+        while (cursor.moveToNext()) {
+            total = total + cursor.getInt(cursor.getColumnIndex(COL_expAmount));
         }
-
         return total;
     }
-
-
 
     public boolean addCat(String item) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -278,113 +205,63 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     public ArrayList<String> getCategoriesList() {
-        ArrayList<String> listOfCategories = new ArrayList<>();
+        ArrayList<String> listOfCategories = new ArrayList();
 
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
         String query = "SELECT * FROM " + CATEGORIES_TABLE_NAME;
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int colIndex = cursor.getColumnIndex(DataBaseHelper.COL_2);
 
-            // Check if the column exists in the result set
-            if (colIndex != -1) {
-                if (cursor.getCount() > 0) {
-                    while (cursor.moveToNext()) {
-                        listOfCategories.add(cursor.getString(colIndex));
-                    }
-                } else {
-                    // Handle the case where the result set is empty
-                    // You might want to log a message or take appropriate action
-                    Log.e("CNF","Column not found");
-
-                }
-            } else {
-                // Handle the case where the column is not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
+        if (cursor.getCount() == 0) {
+            Toast.makeText(context, "The database was empty", Toast.LENGTH_SHORT).show();
+        } else {
+            while (cursor.moveToNext()) {
+                listOfCategories.add(cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_2)));
             }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
-        }
 
+        }
         return listOfCategories;
     }
 
-
     public ArrayList<ListModel> getTodayData() {
-        ArrayList<ListModel> listOfExpenses = new ArrayList<>();
+        ArrayList<ListModel> listOfExpenses = new ArrayList();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE " + COL_date + " = date('now', 'localtime')";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            int catIndex = cursor.getColumnIndex(DataBaseHelper.COL_expCat);
-            int amountIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-            int dateIndex = cursor.getColumnIndex(DataBaseHelper.COL_date);
+        while (cursor.moveToNext()) {
+            String categoryName = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expCat));
+            String amount = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expAmount));
+            String date = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_date));
+            ListModel listModel = new ListModel(categoryName, amount, date);
+            listOfExpenses.add(listModel);
 
-            // Check if the columns exist in the result set
-            if (catIndex != -1 && amountIndex != -1 && dateIndex != -1) {
-                while (cursor.moveToNext()) {
-                    String categoryName = cursor.getString(catIndex);
-                    String amount = cursor.getString(amountIndex);
-                    String date = cursor.getString(dateIndex);
-                    ListModel listModel = new ListModel(categoryName, amount, date);
-                    listOfExpenses.add(listModel);
-                }
-            } else {
-                // Handle the case where columns are not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
         }
 
         return listOfExpenses;
     }
 
-
     public ArrayList<ListModel> getLasTWeekData() {
-        ArrayList<ListModel> listOfExpenses = new ArrayList<>();
+        ArrayList<ListModel> listOfExpenses = new ArrayList();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE " + COL_date
                 + " BETWEEN date('now','-6 days') AND date('now')";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
-        try {
-            while (cursor.moveToNext()) {
-                int catIndex = cursor.getColumnIndex(DataBaseHelper.COL_expCat);
-                int amountIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-                int dateIndex = cursor.getColumnIndex(DataBaseHelper.COL_date);
-
-                // Check if the columns exist in the result set
-                if (catIndex != -1 && amountIndex != -1 && dateIndex != -1) {
-                    String categoryName = cursor.getString(catIndex);
-                    String amount = cursor.getString(amountIndex);
-                    String date = cursor.getString(dateIndex);
-                    ListModel listModel = new ListModel(categoryName, amount, date);
-                    listOfExpenses.add(listModel);
-                } else {
-                    // Handle the case where columns are not found
-                    // You might want to log a message or take appropriate action
-                    Log.e("CNF","Column not found");
-
-                }
-            }
-        } finally {
-            cursor.close(); // Close the cursor in a finally block to ensure it gets closed even if an exception occurs
+        while (cursor.moveToNext()) {
+            String categoryName = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expCat));
+            String amount = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expAmount));
+            String date = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_date));
+            ListModel listModel = new ListModel(categoryName, amount, date);
+            listOfExpenses.add(listModel);
         }
 
         return listOfExpenses;
     }
 
-
     public ArrayList<ListModel> getLastMonthData() {
-        ArrayList<ListModel> listOfExpenses = new ArrayList<>();
+        ArrayList<ListModel> listOfExpenses = new ArrayList();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE "
@@ -392,60 +269,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            int catIndex = cursor.getColumnIndex(DataBaseHelper.COL_expCat);
-            int amountIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-            int dateIndex = cursor.getColumnIndex(DataBaseHelper.COL_date);
-
-            // Check if the columns exist in the result set
-            if (catIndex != -1 && amountIndex != -1 && dateIndex != -1) {
-                String categoryName = cursor.getString(catIndex);
-                String amount = cursor.getString(amountIndex);
-                String date = cursor.getString(dateIndex);
-                ListModel listModel = new ListModel(categoryName, amount, date);
-                listOfExpenses.add(listModel);
-            } else {
-                // Handle the case where columns are not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-
-            }
+            String categoryName = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expCat));
+            String amount = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expAmount));
+            String date = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_date));
+            ListModel listModel = new ListModel(categoryName, amount, date);
+            listOfExpenses.add(listModel);
         }
 
-        cursor.close(); // Close the cursor when done
         return listOfExpenses;
     }
 
-
     public ArrayList<ListModel> getCertainDateData(String dateC) {
-        ArrayList<ListModel> listOfExpenses = new ArrayList<>();
+        ArrayList<ListModel> listOfExpenses = new ArrayList();
         SQLiteDatabase sqLiteDatabase = this.getWritableDatabase();
 
         String query = "SELECT * FROM " + EXPENSES_TABLE_NAME + " WHERE " + COL_date + " = '" + dateC + "'";
 
         Cursor cursor = sqLiteDatabase.rawQuery(query, null);
         while (cursor.moveToNext()) {
-            int catIndex = cursor.getColumnIndex(DataBaseHelper.COL_expCat);
-            int amountIndex = cursor.getColumnIndex(DataBaseHelper.COL_expAmount);
-            int dateIndex = cursor.getColumnIndex(DataBaseHelper.COL_date);
-
-            // Check if the columns exist in the result set
-            if (catIndex != -1 && amountIndex != -1 && dateIndex != -1) {
-                String categoryName = cursor.getString(catIndex);
-                String amount = cursor.getString(amountIndex);
-                String date = cursor.getString(dateIndex);
-                ListModel listModel = new ListModel(categoryName, amount, date);
-                listOfExpenses.add(listModel);
-            } else {
-                // Handle the case where columns are not found
-                // You might want to log a message or take appropriate action
-                Log.e("CNF","Column not found");
-            }
+            String categoryName = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expCat));
+            String amount = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_expAmount));
+            String date = cursor.getString(cursor.getColumnIndex(DataBaseHelper.COL_date));
+            ListModel listModel = new ListModel(categoryName, amount, date);
+            listOfExpenses.add(listModel);
         }
 
-        cursor.close(); // Close the cursor when done
         return listOfExpenses;
     }
-
 
     public void deleteCatRow(String name) {
         SQLiteDatabase sqLiteDatabase = getWritableDatabase();
@@ -455,8 +305,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public boolean addIncome(String category, int amount, String date) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_expCat, category);
+        values.put(COL_expAmount, amount);
+        values.put(COL_total, totalForToday() - amount); // Adjust total for income
+        values.put(COL_date, date);
+
+        long result = db.insert(EXPENSES_TABLE_NAME, null, values);
+        db.close();
+
+        return result != -1;
+    }
+
+
 
 }
-
-
-
