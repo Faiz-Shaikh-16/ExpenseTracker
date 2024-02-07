@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:padding="4dp"
-    android:background="@drawable/background_today_fragment"
+    android:background="@drawable/img1"
     android:layout_width="match_parent" android:layout_height="match_parent">
 
 
@@ -41,18 +41,36 @@
         android:id="@+id/button_today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_total_amount"
+        android:layout_marginTop="15dp"
         android:background="@drawable/custom_button"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp"
         android:text="Add expense" />
+
+
+    <Button
+        android:id="@+id/button_income"
+        android:layout_width="225dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/textViewCurr"
+        android:layout_below="@+id/tv_total_amount"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="7dp"
+        android:layout_marginEnd="16dp"
+
+        android:layout_marginBottom="-2dp"
+        android:layout_toEndOf="@+id/button_today"
+        android:background="@drawable/custom_button"
+        android:text="Add income" />
 
     <ListView
         android:id="@+id/lv_fragm_today"
         android:layout_width="match_parent"
         android:layout_height="389dp"
+        android:layout_below="@+id/textViewCat"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textViewCat" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="2dp" />
 
     <TextView
         android:id="@+id/textViewCat"
