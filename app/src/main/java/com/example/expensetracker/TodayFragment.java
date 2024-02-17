@@ -22,6 +22,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.expensetracker.db.DataBaseHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.Locale;
 public class TodayFragment extends Fragment {
 
     Spinner spinnerDialog;
+    FloatingActionButton floatingAddBtn;
     EditText etAmount;
     EditText etDate;
     ListView lvExpenses;
@@ -73,6 +75,9 @@ public class TodayFragment extends Fragment {
         tvTitle.setPaintFlags(tvTitle.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
         tvGetToday.setText(dataBaseHelper.totalForToday() + "");
         expensesList = dataBaseHelper.getTodayData();
+
+        floatingAddBtn = rootview.findViewById(R.id.floatingAddBtn);
+
         custom = new CustomAdapterTodayListExpenses(getContext(),
                 R.layout.row,
                 expensesList);
@@ -91,6 +96,13 @@ public class TodayFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 dialogAddIncome();
+            }
+        });
+
+        floatingAddBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogAddExpense();
             }
         });
 
@@ -157,9 +169,9 @@ public class TodayFragment extends Fragment {
                             // Update the UI
                             tvGetToday.setText(dataBaseHelper.totalForToday() + "");
                             expensesList = dataBaseHelper.getTodayData();
-                            custom = new CustomAdapterTodayListExpenses(getContext(), R.layout.row, expensesList);
-                            lvExpenses.setAdapter(custom);
-                            custom.notifyDataSetChanged();
+//                            custom = new CustomAdapterTodayListExpenses(getContext(), R.layout.row, expensesList);
+//                            lvExpenses.setAdapter(custom);
+//                            custom.notifyDataSetChanged();
                         }
                     }
                 })

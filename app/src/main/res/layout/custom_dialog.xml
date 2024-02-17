@@ -18,7 +18,7 @@
         android:clickable="true"
         android:ems="10"
         android:inputType="number"
-        android:maxLength="4"
+
         android:maxLines="1"
         android:textColorHighlight="#d4c5c5" />
 
@@ -38,7 +38,7 @@
         android:layout_above="@+id/editText_dialog"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="-29dp"
-        android:text="Expense:" />
+        android:text="Amount:"/>
 
     <TextView
         android:id="@+id/textView4"
