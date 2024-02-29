@@ -3,11 +3,14 @@ package com.example.expensetracker;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -23,6 +26,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.expensetracker.db.DataBaseHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.eazegraph.lib.charts.PieChart;
+import org.eazegraph.lib.models.PieModel;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +55,8 @@ public class TodayFragment extends Fragment {
     int year;
     int month;
     int day;
+
+    PieChart pieChart;
 
     @Nullable
     @Override
@@ -77,6 +85,25 @@ public class TodayFragment extends Fragment {
         expensesList = dataBaseHelper.getTodayData();
 
         floatingAddBtn = rootview.findViewById(R.id.floatingAddBtn);
+
+        ArrayList<PieChart> pieChartArrayList = new ArrayList<>();
+
+        pieChart = rootview.findViewById(R.id.pieChart);
+        PieModel slice1 = new PieModel("Expense",30f, Color.RED);
+        pieChart.addPieSlice(slice1);
+
+        PieModel slice2 = new PieModel("R",40f, Color.BLUE);
+        pieChart.addPieSlice(slice2);
+
+        PieModel slice3 = new PieModel("R",25f, Color.YELLOW);
+        pieChart.addPieSlice(slice3);
+
+        PieModel slice4 = new PieModel("R",25f, Color.GREEN);
+        pieChart.addPieSlice(slice4);
+
+        pieChart.setInnerPadding(40);
+//        pieChart.startAnimation(AnimationUtils.loadAnimation(getContext(), android.R.anim.linear_interpolator));
+        pieChart.startAnimation();
 
         custom = new CustomAdapterTodayListExpenses(getContext(),
                 R.layout.row,
