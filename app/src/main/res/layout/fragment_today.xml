@@ -42,19 +42,124 @@
         android:textSize="30sp"
         android:textColor="#FFF"/>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/pieChartDes"
+        android:layout_below="@+id/tv_month_expenses"
+        android:gravity="center">
+
     <org.eazegraph.lib.charts.PieChart
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/pieChart"
         android:layout_centerHorizontal="true"
-        android:layout_below="@+id/tv_month_expenses"/>
+        android:layout_marginRight="20dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:background="#F80500"
+                    android:layout_margin="5dp"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Clothing"
+                    android:textColor="#FFF"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:background="#FFEA00"
+                    android:layout_margin="5dp"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Food"
+                    android:textColor="#FFF"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:background="#82F607"
+                    android:layout_margin="5dp"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Medicine"
+                    android:textColor="#FFF"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:layout_width="50dp"
+                    android:layout_height="30dp"
+                    android:background="#0225F8"
+                    android:layout_margin="5dp"
+
+                    />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Grocery"
+                    android:textColor="#FFF"/>
+
+
+            </LinearLayout>
+
+
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
     <Button
         android:id="@+id/button_today"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/pieChart"
+        android:layout_below="@+id/pieChartDes"
         android:layout_marginTop="15dp"
         android:background="@drawable/custom_button"
         android:text="Add expense" />
@@ -65,12 +170,11 @@
         android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textViewCurr"
-        android:layout_below="@+id/pieChart"
+        android:layout_below="@+id/pieChartDes"
         android:layout_alignParentEnd="true"
         android:layout_marginStart="40dp"
         android:layout_marginTop="7dp"
         android:layout_marginEnd="16dp"
-
         android:layout_marginBottom="-2dp"
         android:layout_toEndOf="@+id/button_today"
         android:background="@drawable/custom_button"
@@ -96,17 +200,17 @@
         android:textColor="#FFF"
         android:layout_marginTop="20dp"/>
 
-    <TextView
-        android:id="@+id/textViewCurr"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lv_fragm_today"
-        android:layout_alignParentEnd="true"
-        android:paddingRight="15dp"
-        android:text="Amount:"
-        android:textAlignment="textEnd"
-        android:textColor="#FFF"
-        android:layout_marginTop="20dp"/>
+<!--    <TextView-->
+<!--        android:id="@+id/textViewCurr"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_above="@+id/lv_fragm_today"-->
+<!--        android:layout_alignParentEnd="true"-->
+<!--        android:paddingRight="15dp"-->
+<!--        android:text="Amount:"-->
+<!--        android:textAlignment="textEnd"-->
+<!--        android:textColor="#FFF"-->
+<!--        android:layout_marginTop="20dp"/>-->
 
     <TextView
         android:id="@+id/textViewDate"

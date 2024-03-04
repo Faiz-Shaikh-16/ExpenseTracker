@@ -90,7 +90,9 @@ public class TodayFragment extends Fragment {
 
         pieChart = rootview.findViewById(R.id.pieChart);
         PieModel slice1 = new PieModel("Expense",30f, Color.RED);
+
         pieChart.addPieSlice(slice1);
+
 
         PieModel slice2 = new PieModel("R",40f, Color.BLUE);
         pieChart.addPieSlice(slice2);
